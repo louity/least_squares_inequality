@@ -44,7 +44,7 @@
 On s'intéresse aux problèmes d'égalité et d'inégalité aux moindres carrés.
 
 \begin{mydef}
-  Soit $A \in \mathcal{M}_{n,m}(\mathbb{R})$ avec $(n,m) \in \mathbb{N}^2$ et $b \in \mathbb{R}^{n}$.
+  Soient $A \in \mathcal{M}_{n,m}(\mathbb{R})$ avec $(n,m) \in \mathbb{N}^2$ et $b \in \mathbb{R}^{n}$.
     On appelle problème d'égalité aux moindres carrés et on note $\mathcal{P}_{=} (A, b)$ le probleme de minimisation :
     \begin{align*}
       \mathcal{P}_{=}(A, b): \quad & \hat{x} = \underset{x}{\text{argmin }}  ||Ax - b||^{2}\\
@@ -494,15 +494,18 @@ On considère la formule d'itération suivante (en omettant les indices sur l'en
     L'algorithme de Newton  s'appplique et donne comme direction de déscente :
     \begin{align*}
       d_k &= (A^TA)^{-1}A^T(A x_k - b) \\
-      \equiv A^TA d_k &= A^T(A x_k - b) \\
+      A^TA d_k &= A^T(A x_k - b) \\
     \end{align*}
-  \item on peut essayer d'appliquer cette stratégie dans le cas général en cherchant $d_k$ qui résolve le système
+  \item on peut essayer d'appliquer cette stratégie dans le cas général en cherchant $d_k$ qui résolve au sens des moindres carrés le système:
     \begin{align*}
       A_I^TA_I d_k &= A_I^T(A_I x_k - b_I) \\
-      \equiv ???? A_I d_k &= (A_I x_k - b_I) \\
     \end{align*}
-    au sens des moindres carrés, c'est à dire $d_k \in A_I^+(A_I x_k -b_I) + \text{ker}A_I$.
-    On prend $d_k$ de norm minimale, c'est à dire $d_k = A_I^+(A_I x_k -b_I)$.
+    equivalent à (a prouver):
+    \begin{align*}
+      A_I d_k &= (A_I x_k - b_I) \\
+    \end{align*}
+    dont on connait les solutions: $d_k \in A_I^+(A_I x_k -b_I) + \text{ker}A_I$.
+    On prend $d_k$ de norme minimale, c'est à dire $d_k = A_I^+(A_I x_k -b_I)$.
     C'est la direction de descente proposée par l'algorithme de Han.
 \end{itemize}
 
@@ -524,28 +527,35 @@ A_I^TA_Id(x)&=A_I^TA_IA_I^+A_Ix -A_I^TA_IA_I^+b_I \\
 &= \nabla f(x)
 \end{aligned}
 \end{equation}
-\begin{prop} $(f(x_k))_{k \in \mathbb{N}}$ décroit et $\nabla f(x_k) \underset{k \rightarrow +\infty}{\rightarrow} 0$.
+\begin{prop} $(f(x_k))_{k \in \mathbb{N}}$ est décroissante et convergente, et $\nabla f(x_k) \underset{k \rightarrow +\infty}{\rightarrow} 0$.
 \end{prop}
 \subparagraph{Démonstration :}
-On a
-\begin{equation}
-  \begin{aligned}
-    f(x-\lambda d) - f(x)
-      &= -\int_0^1  d^T\nabla(x -\lambda  t d) \lambda \text{d}t \\
-      &=-\int_0^1  d^T\nabla f(x -\lambda t d) \lambda \text{d}t + \int_0^1  d^T\nabla f(x) \lambda \text{d}t - d^T\nabla f(x) \lambda\\
-      &=\int_0^1  \lambda d^T(\nabla f(x) - \nabla f(x -\lambda t d)) - \| A_I d \|^2 \lambda\\
-      &\le \frac{\|A_I\|^2 \| d \|}{2} \lambda^2 - \| A_I d \|^2 \lambda
-  \end{aligned}
-\end{equation}
-On s'est servi du caractère Lipschitz du gradient. $\| \nabla f(x) -\nabla f(y) \| \le \|A \|^2 \| x - \| y \|$.
-On s'est également servi du fait que $\lambda$ est positif (puisqu'on a une direction de descente et la fonction est convexe on peut se restreindre à ce cas).
-En minimisant le terme de droite en $\lambda$ on trouve :
-\begin{equation}
-f(x-\lambda d)-f(x) \le -\frac{1}{2}\frac{\| A_I d \|^4}{\|A_I \|^2 \|d \|^2}
-\end{equation}
-Ainsi puisque la série de terme générale $f(x_k)-f(x_{k+1})$ est convergente, $\frac{\| A_I d_k \|^2}{ \|d_k \|} \rightarrow 0$.
-Soit $d_k \rightarrow 0$ et dans ce cas $\nabla f (x_k) \rightarrow 0$.
-Sinon $A_I d_k \rightarrow 0$ et la conclusion est la même.\\
+\begin{itemize}
+  \item $(f(x_k))_{k \in \mathbb{N}}$ décroit.\\
+    En effet, comme $d_k^T \nabla f(x_k) \leq 0$, $d_k$ est une direction de déscente.
+    Comme $\widehat{\lambda} = \underset{\lambda}{\text{argmin }} f(x_k - \lambda d_k)$, $f(x_{k+1}) \leq f(x_k)$.
+    La suite étant décroissante majorée, elle converge.
+  \item $\nabla f(x_k) \underset{k \rightarrow +\infty}{\rightarrow} 0$\\ 
+    \begin{equation}
+      \begin{aligned}
+        f(x-\lambda d) - f(x)
+          &= -\int_0^1  d^T\nabla(x -\lambda  t d) \lambda \text{d}t \\
+          &=-\int_0^1  d^T\nabla f(x -\lambda t d) \lambda \text{d}t + \int_0^1  d^T\nabla f(x) \lambda \text{d}t - d^T\nabla f(x) \lambda\\
+          &=\int_0^1  \lambda d^T(\nabla f(x) - \nabla f(x -\lambda t d)) - \| A_I d \|^2 \lambda\\
+          &\le \frac{\|A_I\|^2 \| d \|}{2} \lambda^2 - \| A_I d \|^2 \lambda
+      \end{aligned}
+    \end{equation}
+    On s'est servi du caractère Lipschitz du gradient. $\| \nabla f(x) -\nabla f(y) \| \le \|A \|^2 \| x - \| y \|$.
+    On s'est également servi du fait que $\lambda$ est positif (puisqu'on a une direction de descente et la fonction est convexe on peut se restreindre à ce cas).
+    En minimisant le terme de droite en $\lambda$ on trouve :
+    \begin{equation}
+    f(x-\lambda d)-f(x) \le -\frac{1}{2}\frac{\| A_I d \|^4}{\|A_I \|^2 \|d \|^2}
+    \end{equation}
+    Ainsi puisque la série de terme générale $f(x_k)-f(x_{k+1})$ est convergente, $\frac{\| A_I d_k \|^2}{ \|d_k \|} \rightarrow 0$.
+    Soit $d_k \rightarrow 0$ et dans ce cas $\nabla f (x_k) \rightarrow 0$.
+    Sinon $A_I d_k \rightarrow 0$ et la conclusion est la même.\\
+\end{itemize}
+
 Il s'agit maintenant de montrer que le résidu $(Ax_k-b)_+$ converge vers le résidu (unique) d'une solution du problème.
 \begin{lemma}
 Soit $(b_k,c_k)_{k \in \mathbb{N}}$ deux vecteurs tels que le systèmes $Ax\le b_k$ et $Bx=c_k$ soit consistant pour tout $k \in \mathbb{N}$.
@@ -695,9 +705,29 @@ Le fait que les résultats soient quasiment lorsque $N=500$ nous incite à pench
 \section{Une autre approche du problème}
 
 \subsection{Du cas d'inégalité au cas d'égalité sous contrainte}
-TODO
+\begin{thm}
+  Soient $A \in \mathcal{M}_{n,m}(\mathbb{R})$ avec $(n,m) \in \mathbb{N}^2$ et $b \in \mathbb{R}^{n}$.
+  Il existe $(n', m') \in \mathbb{N}^2$ et $A' \in \mathcal{M}_{n',m'}(\mathbb{R})$ et $b' \in \mathbb{R}^{n'}$ tels que le système d'inégalité linéraire
+\begin{align*}
+  Ax &\leq b\\
+\end{align*}
+soit équivalent au sytème d'égalité lineaire avec contrainte:
+\begin{align*}
+  A'x &= b'\\
+  x &\geq 0\\
+\end{align*}
+\end{thm}
+
+\subparagraph{Remarques :}
+\begin{itemize}
+  \item TODO
+\end{itemize}
+
+\subparagraph{Démonstration :}
+  TODO
 
 \subsection{Algorithme de gradient projeté}
+Pour résoudre le problème sous contrainte, on effectue un algorithme de gradient projeté.
 TODO
 
 \bibliographystyle{plain}
