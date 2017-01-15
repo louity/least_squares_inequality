@@ -53,7 +53,7 @@ On s'intéresse aux problèmes d'égalité et d'inégalité aux moindres carrés
 Résoudre le problème d'égalité aux moindres carrés permet de trouver la meilleure solution possible au systeme linéaire $Ax = b$ :
 \begin{itemize}
   \item lorsqu'il existe une solution à ce système linéaire, les deux problèmes sont équivalents
-  \item lorsque l'on a plus d'équations que d'inconnues $(n > m)$, le système peut être inconsistant et n'avoir aucune solution.
+  \item si $b$ n'est pas dans l'images de $A$ , où bien lorsque l'on a plus d'équations que d'inconnues $(n > m)$ et est inconsistant, il n'y a aucune solutions.
     Dans ce cas, une solution $x_0$ du problème d'égalité aux moindres carrés est la meilleure approximations telle que $Ax_0 = b$ au sens des moindres carrés.
     C'est une solution approximative au système linéaire $Ax = b$
 \end{itemize}
@@ -207,17 +207,15 @@ F étant convexe, ses minimas sont ses points stationnaires, qui vérifient $\na
   L'ensemble des solutions du problème $\mathcal{P}_{=}(A, b)$ est l'ensemble $A^+b + \text{ker}A$.
 \end{prop}
 \subparagraph{Démonstration :}
-  Une solution $x$ du problème vérifie $A^T(Ax-b)=0$, i.e.
-le système linéraire $A^TAx = A^Tb$.
-  L'ensemble des solutions de de système linéaire est $x_0 + \text{ker}A^TA$ ou $x_0$ est une solution particulière ce ce système.
+  Une solution $x$ du problème vérifie $A^T(Ax-b)=0$ donc est solution du système linéraire $A^TAx = A^Tb$.
+  L'ensemble des solutions de ce système linéaire est $x_0 + \text{ker}A^TA$ ou $x_0$ est une solution particulière ce ce système.
 \begin{itemize}
-  \item $A^+b$ est une solution de ce système:
+  \item $A^+b$ est une solution particulière de ce système:
     \begin{align*}
-      A &= N \left( \begin{matrix} D & 0 \\ 0 & 0 \end{matrix}\right) M\\
-      A^+ &= M^T \left( \begin{matrix} D^{-1} & 0 \\ 0 & 0 \end{matrix}\right) N^T.\\
-      A^T A A^+ b &= M^T \left( \begin{matrix} D & 0 \\ 0 & 0 \end{matrix}\right) N^T b\\
-      A^T b &= M^T \left( \begin{matrix} D & 0 \\ 0 & 0 \end{matrix}\right) N^T b\\
-      \implies& A^T(A A^+ b - b) = 0\\
+      A^T A A^+ &= A^T (A A^+)^T \\
+        &= (A A^+ A)^T\\
+        &= A^T\\
+      \implies &A^T A (A^+ b) = A^Tb\\
     \end{align*}
   \item $\text{ker}A = \text{ker}A^TA$.
     \begin{align*}
@@ -232,7 +230,7 @@ Donc l'ensemble des solutions du problème $\mathcal{P}_{=}(A, b)$ est $A^+b + \
 \end{prop}
 \subparagraph{Démonstration :}
   Toute solutions $x_0$ de $\mathcal{P}_{=}(A, b)$ s'écrit $x_0 = A^+b + y$, $y \in \text{ker}A$.
-  Comme $\text{ker}A \perp \text{Im}A^+$, par le théoreme de pythagore $\|x_0 \|^2= \|A^+b \|^2 + \| y \|^2$ donc $|x_0| \leq |A^+b|$.
+  Comme $\text{ker}A \perp \text{Im}A^+$, par le théoreme de Pythagore $\|x_0 \|^2= \|A^+b \|^2 + \| y \|^2$ donc $\|x_0\| \leq \|A^+b\|$.
 
 Maintenant que nous avons traité le problème d'égalité aux moindres carrés, intéressons nous au problème d'inégalité aux moindres carrés.
 
@@ -241,7 +239,7 @@ Maintenant que nous avons traité le problème d'égalité aux moindres carrés,
 \subsection{Existence de solutions}
 
 \begin{thm}
-  Quelque soit la matrice $A \in \mathcal{M}_{n \times m}(\mathbb{R})$ et le vecteur $b \in \mathbb{R}^n$, le problème d'inégalité aux moindres carrés $\mathcal{P}_{\leq}(A, b)$ admet une solution $x_0$.
+  Quelque soit la matrice $A \in \mathcal{M}_{n \times m}(\mathbb{R})$ et le vecteur $b \in \mathbb{R}^n$, le problème d'inégalité aux moindres carrés $\mathcal{P}_{\leq}(A, b)$ admet une solution $x_0 \in \mathbb{R}^m$.
   Quelque soit la solution $x_0$, le vecteur résidu $z = (Ax_0 - b)_+$ est unique est $x$ est une solution du problème ssi $(Ax - b)_+ = z$.
 \end{thm}
 \subparagraph{Démonstration :}
@@ -249,13 +247,18 @@ Pour l'existence, trois preuves différentes sont proposées dans l'article \cit
 La deuxième partie du théorème est évidente : s'il existe deux solutions $x_0$ et $x_1$ telles que $(Ax_1 - b)_+ \neq (Ax_0 - b)_+$ alors soit $(Ax_1 - b)_+ < (Ax_0 - b)_+$ ce qui contredit le fait que $x_0$ soit une solution, soit $(Ax_1 - b)_+ > (Ax_0 - b)_+$ ce qui contredit le fait que $x_1$ soit une solution.
 De même tout vecteur $x$ de résidu minimal est solution.
 
-Cependant, l'ensemble des solutions de $\mathcal{P}_{\leq}(A, b)$ n'est pas connu.
-C'est pourquoi nous commençons par nous restreindre à des cas plus simples.
+
+\subparagraph{Remarques :}
+\begin{itemize}
+\item \textbf{Il n'existe pas pour l'instant de théorème donnant la forme des solutions au problème $\mathcal{P}_{\leq}(A, b)$}.
+C'est pourquoi nous allons nous intéresser aux algorithmes qui proposent de trouver une solution au problème.
+\item Avant de s'attaquer à notre problème d'inégalités aux moindres carrés dans sa forme générale, nous allons nous intéresser au système d'inégalité $Ax \leq b$ avec $A \in \mathcal{M}_{n \times m}(\mathbb{R})$ et $b \in \mathbb{R}^n$.
+\end{itemize}
 
 \subsection{Consistance de systèmes d'inégalité}
 \begin{mydef}[Consistance]
 Soient $A \in \mathcal{M}_{n \times m}(\mathbb{R})$ et $b \in \mathbb{R}^n$
-On dit que le système d'inéquations linéaires $(A,b)$ est consistant si $\exists x \in \mathbb{R}^m$ tel que $Ax \le b$.
+On dit que le système d'inéquations linéaires $Ax \leq b$ est dit consistant si $\exists x \in \mathbb{R}^m$ tel que $Ax \le b$.
 \end{mydef}
 \subparagraph{Remarques :}
 \begin{itemize}
@@ -274,16 +277,19 @@ Soit $(A,b)$ un système fortement consistant alors $(A,b)$ admet une infinité 
 Puisque l'ensemble des solutions est convexe et qu'on a deux solutions distinctes, celui-ci est infini.
 
 \subsection{Consitance des systèmes d'inégalité homogènes}
-Les systemes d'inégalité homogènes sont tels que $b=0$.\\
+\begin{mydef}[Homogène]
+  Un système d'inégalité $Ax \leq b$ est dit homogène si $b=0$.
+\end{mydef}
 
-Nou allons ennoncer des théormes d'alternatives qui nous permettrons d'établir une condition nécessaire est suffisante à la consistance d'un système d'inégalité tel que $b=0$.
+Nou allons ennoncer des théormes d'alternatives qui nous permettront d'établir une condition nécessaire est suffisante à la consistance d'un système d'inégalité homogène.
 
-Un théormème d'alternative consiste en un ensemble de deux assertions $P$ et $Q$ telles que l'une est fausse quand l'autre est vraie:
+\begin{mydef}[Théorème d'alternative]
+  Un théorème d'alternative consiste en un ensemble de deux assertions $P$ et $Q$ telles que l'une est fausse quand l'autre est vraie:
 \[ P \implies \text{not } Q \text{ and } \text{not } P \implies Q \]
+\end{mydef}
+
 %Les preuves des trois premières parties (sauf celle du théorème de Gordan reposant sur l'existence d'une solution au sens des moindres carrés) peuvent être trouvées dans \cite{dantzig1998linear}
 
-
-\subsubsection{Théorème de Gordan}
 \begin{thm}[Gordan, 1873]
   On note $(a_i)_{i \in \llbracket 1,m \rrbracket} \in \left(\mathbb{R}^m \right)^n$ les lignes de $A$
   $(\mathcal{P}) \  \exists x \in \mathbb{R}^m, \ \forall i \in \llbracket 1,n \rrbracket, \ \langle a_i,x \rangle <0$ est équivalent à la négation de la proposition suivante : $ (\mathcal{Q}) \ \exists (\lambda_i)_{i \in \llbracket 1,n \rrbracket}\in \mathbb{R_+}^n \backslash\lbrace 0\rbrace, \ \underset{i=1}{\overset{n}{\sum}} \lambda_i a_i=0$
@@ -319,7 +325,6 @@ Mais on peut réécrire cela $\underset{i=1}{\overset{n}{\sum}}a_i ((Ax-\epsilon
 Enfin, on remarque que $\exists i \in \llbracket 1,n \rrbracket, \ ((Ax-\epsilon)_+)_i>0$ sinon on a une solution consistante.
 En posant $\lambda_i=((Ax-\epsilon)_+)_i$ on a donc montré $\mathcal{Q}$.
 
-\subsubsection{Lemme de Farkas, théorème de Motzkin et de Stiemke.}
 
 Le lemme de Farkas permet de passer aux inégalité larges.
 \begin{lemma}[Farkas, 1902]
@@ -455,8 +460,9 @@ On ne dispose que depuis récemment d'algorithmes qui convergent en temps polyno
 
 \subsubsection{Convexité}
 La fonction $F(x)=\|(Ax-b)_+ \|^2$ que l'on cherche à minimiser est différentiable et convexe.
-Malheureusement elle est strictement convexe si et seulement si $\text{ker}A=\lbrace 0\rbrace$.
-Ainsi, si $\text{ker}A \neq \lbrace 0\rbrace$, on n'a aucune assurance que les algorithmes "classiques" de minimisation de fonctions convexes (gradient, gradient conjugué...) convergent vers la solution.
+Malheureusement elle n'est pas strictement convexe en général.
+En effet, si il existe $x_0$ et $x_1$ tels que $F(x_0)$ et $F(x_1)$ alors $\forall x \in [x_0, x_1]$, $F(x) = 0$ : F est constante.
+On n'a aucune assurance que les algorithmes "classiques" de minimisation de fonctions convexes (gradient, gradient conjugué...) convergent vers une solution.
 
 \subsubsection{Elimination de Fourier-Motzkin}
 On va ici décrire une méthode découverte par Fourier pour déterminer si un système est consistant ou non.
@@ -685,8 +691,6 @@ Malheureusement on perd alors la convergence.
 \end{figure}
 On a ici tenté d'augmenter le nombre d'itérations de l'algorithme afin de déterminer si le problème de la non-convergence est dû à un $\alpha$ trop petit ou à un nombre d'itérations trop faible.
 Le fait que les résultats soient quasiment lorsque $N=500$ nous incite à pencher vers la première hypothèse d'un $\alpha$ trop petit.
-\bibliographystyle{plain}
-\bibliography{report_project}
 
 \section{Une autre approche du problème}
 
@@ -695,5 +699,8 @@ TODO
 
 \subsection{Algorithme de gradient projeté}
 TODO
+
+\bibliographystyle{plain}
+\bibliography{report_project}
 
 \end{document}
