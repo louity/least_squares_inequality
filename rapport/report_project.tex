@@ -724,11 +724,37 @@ soit équivalent au sytème d'égalité lineaire avec contrainte:
 \end{itemize}
 
 \subparagraph{Démonstration :}
-  TODO
+On pose $z = Ax -b$ de sorte que le système $Ax \leq b$ est équivalent à:
+\begin{align*}
+  z &\geq 0 \\
+  Ax + z &= b
+\end{align*}
+On pose $x_+ = max(x, 0)$ et $x_- = max(-x, 0)$ de sorte que:
+\begin{align*}
+  x_+ &\geq 0 \\
+  x_+ &\geq 0 \\
+  \tilde{A} &= \left[ A, -A, Id \right]\\
+  \tilde{x} &= \left[ \begin{array}{c} x_+ \\ x_- \\ z \end{array} \right]\\
+\end{align*}
+et on a bien :
+\begin{align*}
+  \tilde{A}\tilde{x} &= Ax + z = b\\
+  \tilde{x} \geq 0
+\end{align*}
+qui est équivalent au système $Ax \leq b$.
 
 \subsection{Algorithme de gradient projeté}
-Pour résoudre le problème sous contrainte, on effectue un algorithme de gradient projeté.
-TODO
+
+Ce problème d'égalité sous contrainte que nous avons énoncé peut être résolu au sens des moindres carrés.
+On pose le Lagrangien
+\begin{align*}
+  \mathcal{L} : &\mathbb{R}^{m'} \times \mathbb{R}_+^{n'} \to \mathbb{R}\\
+  &(\tilde{x}, \Lambda) \mapsto \| \tilde{A}\tilde{x} - b \|^2 + \Lambda^T \tilde{x}\\
+\end{align*}
+Les conditions d'optimalité KKT donnent:
+\begin{align*}
+  \tilde{A}^T \left( \tilde{A}\tilde{x} - b \right) &= \Lambda\\
+\end{align*}
 
 \bibliographystyle{plain}
 \bibliography{report_project}
