@@ -746,14 +746,10 @@ qui est équivalent au système $Ax \leq b$.
 \subsection{Algorithme de gradient projeté}
 
 Ce problème d'égalité sous contrainte que nous avons énoncé peut être résolu au sens des moindres carrés.
-On pose le Lagrangien
-\begin{align*}
-  \mathcal{L} : &\mathbb{R}^{m'} \times \mathbb{R}_+^{n'} \to \mathbb{R}\\
-  &(\tilde{x}, \Lambda) \mapsto \| \tilde{A}\tilde{x} - b \|^2 + \Lambda^T \tilde{x}\\
-\end{align*}
 Les conditions d'optimalité KKT donnent:
 \begin{align*}
   \tilde{A}^T \left( \tilde{A}\tilde{x} - b \right) &= \Lambda\\
+  \Lambda \geq 0\\
 \end{align*}
 
 \bibliographystyle{plain}
