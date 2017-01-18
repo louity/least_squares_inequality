@@ -46,11 +46,12 @@ On s'intéresse aux problèmes d'égalité et d'inégalité aux moindres carrés
 \begin{mydef}
   Soient $A \in \mathcal{M}_{n,m}(\mathbb{R})$ avec $(n,m) \in \mathbb{N}^2$ et $b \in \mathbb{R}^{n}$.
     On appelle problème d'égalité aux moindres carrés et on note $\mathcal{P}_{=} (A, b)$ le probleme de minimisation :
-    \begin{align*}
-      \mathcal{P}_{=}(A, b): \quad & \hat{x} = \underset{x}{\text{argmin }}  ||Ax - b||^{2}\\
-    \end{align*}
+    \begin{equation}
+    \label{pbm1}
+      \mathcal{P}_{=}(A, b): \quad \hat{x} = \underset{x \in \mathbb{R}^m}{\text{argmin }}  ||Ax - b||^{2}
+    \end{equation}
 \end{mydef}
-Résoudre le problème d'égalité aux moindres carrés permet de trouver la meilleure solution possible au systeme linéaire $Ax = b$ :
+Résoudre le problème d'égalité aux moindres carrés permet de trouver la meilleure solution possible au système linéaire $Ax = b$ :
 \begin{itemize}
   \item lorsqu'il existe une solution à ce système linéaire, les deux problèmes sont équivalents
   \item si $b$ n'est pas dans l'images de $A$ , où bien lorsque l'on a plus d'équations que d'inconnues $(n > m)$ et est inconsistant, il n'y a aucune solutions.
@@ -59,12 +60,13 @@ Résoudre le problème d'égalité aux moindres carrés permet de trouver la mei
 \end{itemize}
 
 \begin{mydef}
-  On appelle problème d'inégalité aux moindres carrés et on note $\mathcal{P}_{\leq} (A, b)$ le probleme de minimisation :
-    \begin{align*}
-      \mathcal{P}_{\leq} (A, b): \quad & \hat{x} = \underset{x}{\text{argmin }}  ||(Ax - b)_+||^{2}\\
-    \end{align*}
+  On appelle problème d'inégalité aux moindres carrés et on note $\mathcal{P}_{\leq} (A, b)$ le problème de minimisation :
+    \begin{equation}
+    \label{pbm2}
+      \mathcal{P}_{\leq} (A, b): \quad \hat{x} = \underset{x \in \mathbb{R}^m}{\text{argmin }}  ||(Ax - b)_+||^{2}
+    \end{equation}
 \end{mydef}
-De même que pour le cas d'égalité, résoudre le problème d'inégalité aux moindres carrés permet de trouver la meilleure solution possible au systeme d'inégalité linéaires $Ax \leq b$ :
+De même que pour le cas d'égalité, résoudre le problème d'inégalité aux moindres carrés permet de trouver la meilleure solution possible au système d'inégalité linéaires $Ax \leq b$ :
 \begin{itemize}
   \item lorsqu'il existe une solution à ce système d'inégalité, les deux problèmes sont équivalents
   \item Dans le cas où ils n'y a pas de solutions aux système d'inégalité, c'est une solution approximative.
@@ -75,9 +77,11 @@ Ce problème est traité dans la première partie du rapport.
 
 Pour le problème d'inégalité, on a simplement un résultat d'existence.
 
-\textbf{Le but de ce rapport est de proposer un algorithme pour trouver une solution au problème d'intégalité aux moindres carrés $\mathcal{P}_{\leq} (A, b)$.}
+\textbf{Le but de ce rapport est de proposer un algorithme pour trouver une solution au problème d'inégalité aux moindres carrés $\mathcal{P}_{\leq} (A, b)$.}
 
-\section{Egalité aux moindres carrés}
+\section{Équations linéaires}
+
+Les équations du type $Ax=b$ avec $A \in \mathcal{M}_{n,m}(\mathbb{R})$ et $b \in \mathbb{R}^n$ ont été largement étudiées. Des conditions nécessaires et suffisantes simples ont été exprimées et des méthodes pour trouver ces solutions lorsqu'elles existent ont été développées (méthode du pivot de Gauss, décomposition LU...). Lorsqu'aucune solution n'existe, on considère le problème $\mathcal{P}_{=}(A,b)$, \ref{pbm1}. Dans cette section on traite le problème des égalités linéaires aux moindres carrés.
 
 \subsection{Rappels sur la pseudo-inverse}
 
@@ -90,9 +94,9 @@ D & 0 \\ 0 & 0
 \end{thm}
 \subparagraph{Démonstration :} On considère la matrice $A^TA \in \mathcal{M}_{m}(\mathbb{R})$.
 Celle-ci est symétrique, semi-définie positive et on peut appliquer le théorème spectral.
-On a donc une matrice orthogonales $P$ qui vérifient $P^TA^TAP=\begin{matrix}
+On a donc une matrice orthogonale $P$ qui vérifie $P^TA^TAP=\left( \begin{matrix}
 D^2 & 0 \\ 0 & 0
-\end{matrix}$ avec $D^2$ diagonale strictement positive.
+\end{matrix} \right)$ avec $D^2$ diagonale strictement positive.
 Il est à noter que $D$ est une matrice de $\mathcal{M}_r(\mathbb{R})$ où $r$ est le rang de la matrice $A$ (et donc plus petit que $m$ et $n$).
 On note $P=[P_1 \ P_2]$ où $P_1 \in \mathcal{M}_{m,r}(\mathbb{R})$ et $P_2 \in \mathcal{M}_{m,m-r}(\mathbb{R})$.
 On a alors :
@@ -185,11 +189,11 @@ Soit un élément $x$ tel que $AA^+x=0$, alors $A^+AA^+x=A^+x=0$ donc c'est un �
 On en déduit l'égalité des noyaux.
 De plus $\text{Im}A \subset \text{Im}AA^+$.
 Soit $y=Ax$.
-Alors $y=AA^+Ax$ donc $y \in \text{Im}A$.
+Alors $y=AA^+Ax$ donc $y \in \text{Im}AA^+$.
 On a donc l'égalité des images.
 On peut donc conclure.
 \begin{prop}
-Une conséquence de cette proposition est $\text{ker}A=\text{ker}A^+$ et $\text{Im}A=\text{Im}A^+$.
+Une conséquence de cette proposition est $\text{ker}A^T=\text{ker}A^+$ et $\text{Im}A^T=\text{Im}A^+$.
 \end{prop}
 \subparagraph{Remarque :} cette identification des supplémentaires est vraie seulement parce que les sommes directes sont orthogonales.\\
 
@@ -201,7 +205,7 @@ Revenons au problème des moindres carrés.
 \end{prop}
 \subparagraph{Démonstration :}
 Le problème d'égalité aux moindre carrés consiste en la minimisation de la fonction $F: x \mapsto ||Ax - b||^2$.
-F étant convexe, ses minimas sont ses points stationnaires, qui vérifient $\nabla F = 0$, i.e. $A^T(Ax - b) = 0$.
+F étant convexe, ses minimums sont ses points stationnaires, qui vérifient $\nabla F = 0$, i.e. $A^T(Ax - b) = 0$.
 
 \begin{prop}
   L'ensemble des solutions du problème $\mathcal{P}_{=}(A, b)$ est l'ensemble $A^+b + \text{ker}A$.
@@ -211,17 +215,21 @@ F étant convexe, ses minimas sont ses points stationnaires, qui vérifient $\na
   L'ensemble des solutions de ce système linéaire est $x_0 + \text{ker}A^TA$ ou $x_0$ est une solution particulière ce ce système.
 \begin{itemize}
   \item $A^+b$ est une solution particulière de ce système:
-    \begin{align*}
+    \begin{equation}
+    \begin{aligned}
       A^T A A^+ &= A^T (A A^+)^T \\
         &= (A A^+ A)^T\\
         &= A^T\\
       \implies &A^T A (A^+ b) = A^Tb\\
-    \end{align*}
+      \end{aligned}
+    \end{equation}
   \item $\text{ker}A = \text{ker}A^TA$.
-    \begin{align*}
+    \begin{equation}
+    \begin{aligned}
       \text{ker}A &\subset \text{ker}A^TA\\
       \text{ker}A^TA &\subset \text{ker}A:\quad x \in &\text{ker}A^TA \implies A^TAx = 0 \implies x^TA^TAx = 0 = || Ax ||^2 \implies Ax = 0 \implies x \in \text{ker}A\\
-    \end{align*}
+      \end{aligned}
+    \end{equation}
 \end{itemize}
 Donc l'ensemble des solutions du problème $\mathcal{P}_{=}(A, b)$ est $A^+b + \text{ker}A$.
 
@@ -230,39 +238,27 @@ Donc l'ensemble des solutions du problème $\mathcal{P}_{=}(A, b)$ est $A^+b + \
 \end{prop}
 \subparagraph{Démonstration :}
   Toute solutions $x_0$ de $\mathcal{P}_{=}(A, b)$ s'écrit $x_0 = A^+b + y$, $y \in \text{ker}A$.
-  Comme $\text{ker}A \perp \text{Im}A^+$, par le théoreme de Pythagore $\|x_0 \|^2= \|A^+b \|^2 + \| y \|^2$ donc $\|x_0\| \leq \|A^+b\|$.
+  Comme $\text{ker}A \perp \text{Im}A^+$, par le théorème de Pythagore $\|x_0 \|^2= \|A^+b \|^2 + \| y \|^2$ donc $\|x_0\| \leq \|A^+b\|$.
 
-Maintenant que nous avons traité le problème d'égalité aux moindres carrés, intéressons nous au problème d'inégalité aux moindres carrés.
+Le problème des égalités linéaires étant traité on s'intéresse maintenant au cas des inégalités linéaires.
 
-\section{Inégalité aux moindres carrés}
+\section{Inégalités linéaires : le problème de la consistance}
 
-\subsection{Existence de solutions}
+\subsection{Introduction et quelques définitions}
 
-\begin{thm}
-  Quelque soit la matrice $A \in \mathcal{M}_{n \times m}(\mathbb{R})$ et le vecteur $b \in \mathbb{R}^n$, le problème d'inégalité aux moindres carrés $\mathcal{P}_{\leq}(A, b)$ admet une solution $x_0 \in \mathbb{R}^m$.
-  Quelque soit la solution $x_0$, le vecteur résidu $z = (Ax_0 - b)_+$ est unique est $x$ est une solution du problème ssi $(Ax - b)_+ = z$.
-\end{thm}
-\subparagraph{Démonstration :}
-Pour l'existence, trois preuves différentes sont proposées dans l'article \cite{LSCHUP}.
-La deuxième partie du théorème est évidente : s'il existe deux solutions $x_0$ et $x_1$ telles que $(Ax_1 - b)_+ \neq (Ax_0 - b)_+$ alors soit $(Ax_1 - b)_+ < (Ax_0 - b)_+$ ce qui contredit le fait que $x_0$ soit une solution, soit $(Ax_1 - b)_+ > (Ax_0 - b)_+$ ce qui contredit le fait que $x_1$ soit une solution.
-De même tout vecteur $x$ de résidu minimal est solution.
-
-
-\subparagraph{Remarques :}
+On s'intéresse désormais à \ref{pbm2}, c'est-à-dire au problème $\mathcal{P}_{\le}(A,b)$. Si la théorie est bien comprise dans le cas des égalités linéaires (théorie de la dimension) et que les solutions sont bien décrites (sous-espaces affines) ce n'est pas le cas pour les inégalités linéaires. En effet, l'ensemble des solutions (lorsqu'il est non vide) forme un polyèdre convexe, plus difficile à manipuler qu'un simple espace vectoriel. Dans cette section on donne des éléments de réponse concernant l'unicité et l'existence de solutions via les théorèmes de l'alternative. On présente également deux méthodes pour trouver des solutions dans le cas consistant :
 \begin{itemize}
-\item \textbf{Il n'existe pas pour l'instant de théorème donnant la forme des solutions au problème $\mathcal{P}_{\leq}(A, b)$}.
-C'est pourquoi nous allons nous intéresser aux algorithmes qui proposent de trouver une solution au problème.
-\item Avant de s'attaquer à notre problème d'inégalités aux moindres carrés dans sa forme générale, nous allons nous intéresser au système d'inégalité $Ax \leq b$ avec $A \in \mathcal{M}_{n \times m}(\mathbb{R})$ et $b \in \mathbb{R}^n$.
+\item l'élimination de Fourier-Motzkin
+\item l'algorithme du simplexe.
 \end{itemize}
 
-\subsection{Consistance de systèmes d'inégalité}
 \begin{mydef}[Consistance]
 Soient $A \in \mathcal{M}_{n \times m}(\mathbb{R})$ et $b \in \mathbb{R}^n$
 On dit que le système d'inéquations linéaires $Ax \leq b$ est dit consistant si $\exists x \in \mathbb{R}^m$ tel que $Ax \le b$.
 \end{mydef}
 \subparagraph{Remarques :}
 \begin{itemize}
-  \item Dans le cas consitant, la résolutions de $Ax \leq b$ est équivalent à la résolution de $\mathcal{P}_{\leq}(A, b)$
+  \item Dans le cas consistant, la résolution de $Ax \leq b$ est équivalente à la résolution de $\mathcal{P}_{\leq}(A, b)$
   \item Trouver une solution au système $Ax \leq b$ n'est pas un problème facile bien que son expression soit très simple.
 \end{itemize}
 
@@ -276,16 +272,16 @@ Soit $(A,b)$ un système fortement consistant alors $(A,b)$ admet une infinité 
 \subparagraph{Démonstration :} On considère $(1+\epsilon) x$ avec $\epsilon$ assez petit pour que les inégalité linéaires soient toujours vérifiées (vrai par continuité).
 Puisque l'ensemble des solutions est convexe et qu'on a deux solutions distinctes, celui-ci est infini.
 
-\subsection{Consitance des systèmes d'inégalité homogènes}
+\subsection{Consitance et théorèmes de l'alternative}
 \begin{mydef}[Homogène]
   Un système d'inégalité $Ax \leq b$ est dit homogène si $b=0$.
 \end{mydef}
 
-Nou allons ennoncer des théormes d'alternatives qui nous permettront d'établir une condition nécessaire est suffisante à la consistance d'un système d'inégalité homogène.
+Nous allons énoncer des théorèmes d'alternative qui nous permettront d'établir une condition nécessaire est suffisante à la consistance d'un système d'inégalité homogène.
 
 \begin{mydef}[Théorème d'alternative]
   Un théorème d'alternative consiste en un ensemble de deux assertions $P$ et $Q$ telles que l'une est fausse quand l'autre est vraie:
-\[ P \implies \text{not } Q \text{ and } \text{not } P \implies Q \]
+\[ P \implies \neg Q \text{ and } \neg P \implies Q \]
 \end{mydef}
 
 %Les preuves des trois premières parties (sauf celle du théorème de Gordan reposant sur l'existence d'une solution au sens des moindres carrés) peuvent être trouvées dans \cite{dantzig1998linear}
@@ -298,7 +294,7 @@ Nou allons ennoncer des théormes d'alternatives qui nous permettront d'établir
 \begin{itemize}
   \item
     On peut donner une interprétation géométrique de ce théorème : aucun des $a_i$ ne doit être dans le cône engendré par les vecteurs $(-a_j)_{j \in \llbracket 1,n \rrbracket \backslash \lbrace i \rbrace}$.
-    Cette remarque géométrique peut être comprise en termes de condition pour que les demi-hyperplans portés par les $a_i$ s'intersectent (faire dessin).
+    Cette remarque géométrique peut être comprise en termes de condition pour que les demi-hyperplans portés par les $a_i$ s'intersectent.
   \item
     Ce théorème se rapproche d'une condition nécessaire et suffisante pour que le système d'inégalité $Ax \leq 0$ admette une solution consistante.
     Malheureusement les inégalité sont strictes.
@@ -306,7 +302,7 @@ Nou allons ennoncer des théormes d'alternatives qui nous permettront d'établir
 
 \subparagraph{Deux démonstrations du théorème de Gordan}
 On va citer ici deux démonstrations du théorème de Gordan.
-La première est totalement géométrique, la seconde utilise à profit l'existence de solutions au sens des moindres carrés.
+La première est totalement géométrique \cite{dantzig1998linear}, la seconde utilise à profit l'existence de solutions au sens des moindres carrés.
 Il est à noter que l'on ne considère que l'implication $(\neg \mathcal{Q} \Rightarrow \mathcal{P})$ que l'on démontre par contraposée.
 L'autre implication $(\mathcal{Q} \Rightarrow \neg \mathcal{P})$ est triviale.
 \subparagraph{Démonstration 1 :} On considère $\Pi_0$ la projection de $0$ sur le polyèdre convexe fermé formé par la famille $(-a_i)_{i \in \llbracket 1,n \rrbracket}$, noté $\Delta$.
@@ -338,7 +334,7 @@ On constate que si $\neg \mathcal{P}$ alors on est dans les conditions du théor
 Si  $\lambda_1 >0$ alors on a terminé.
 Plaçons-nous désormais dans le cadre où $\lambda_1=0$.
 On a donc $\underset{i=1}{\overset{n}{\sum}} \lambda_i a_i=0$ et au moins un des $\lambda_i$ (avec $i \in \llbracket 2,n \rrbracket$) est non nul, on le note $\lambda_j$.
-Plaçons-nous sur $a_j^{\perp}$ qui est de dimension strictement inférieure à celle de l'espace ambiant (on a supposé tous les $a_i \neq 0$, l'extension au cas où l'un d'entre eux ou plusieurs sont nulles est immédiate).
+Plaçons-nous sur $a_j^{\perp}$ qui est de dimension strictement inférieure à celle de l'espace ambiant (on a supposé tous les $a_i \neq 0$, l'extension au cas où l'un d'entre eux ou plusieurs sont nuls est immédiate).
 On peut appliquer le lemme de Farkas sur $a_j^{\perp}$ et on a $(\alpha_i)_{i \in \llbracket 1,n \rrbracket \backslash \lbrace j \rbrace} \in \mathbb{R}_+^{n-1}$ avec $\alpha_1>0$ tel que $\underset{i=1, i \neq j}{\overset{n}{\sum}}\alpha_i a_i= \mu a_j$ avec $\mu \in \mathbb{R}$ (en effet il a fallu projeter les $a_i$ dans $a_j^{\perp}$ pour pouvoir appliquer le lemme, c'est-à-dire, il a fallu appliquer le lemme aux $a_i-\langle a_i,a_j \rangle a_j$).
 Si $\mu$ est négatif alors on a terminé.
 Si $\mu$ est positif alors on remplace $a_j$ par $\frac{-1}{\lambda_j}\underset{i=1, i \neq j}{\overset{n}{\sum}}\lambda_i a_i$ et on conclut.
@@ -351,9 +347,6 @@ On peut maintenant citer le théorème de Motzkin, qui bien que semblant plus fo
   est équivalent à la négation de la proposition suivante :
   $ (\mathcal{Q}) \ \exists (\lambda_i)_{i \in \llbracket 1,n \rrbracket}\in \mathbb{R_+}^n \backslash\lbrace (\lambda_1,\dots,\lambda_p)=0\rbrace, \ \underset{i=1}{\overset{n}{\sum}} \lambda_i a_i=0$
 \end{thm}
-
-\subparagraph{Remarque :}
-  Ce théormème nous fournit une CNS pour qu'un systeme $Ax \leq b$ soit consistant.
 
 \subparagraph{Démonstration :}
   Encore une fois $\mathcal{Q} \Rightarrow \neg \mathcal{P}$ est triviale.
@@ -372,7 +365,7 @@ On peut maintenant citer le théorème de Motzkin, qui bien que semblant plus fo
 Le cas des inégalité larges est donc bien compris.
 Il s'agit maintenant d'entériner le cas où $b \neq 0$.
 
-\subsection{Consitance des systèmes d'inégalité dans le cas général $b \neq 0$}
+\subsection{Retour aux inégalités linéaires}
 
 Pour cela on va se servir des équivalences suivantes :
 
@@ -430,7 +423,7 @@ Pour déterminer les faces il convient ensuite de considérer les combinaisons c
 Ce procédé peut être extrêmement couteux.
 En effet, le nombre de sommets est possiblement bien supérieur à la dimension.
 Par exemple, le cube $[0,1]^n$ a pour sommets $2^n$ points.
-Néanmoins pour des petits problèmes on peut toujours raison via des considérations géométriques.\\
+Néanmoins pour des petits problèmes on peut toujours raisonner via des considérations géométriques.\\
 ~\\
 Ayant obtenu des résultats sur le nombre de solutions lorsque la consistance est acquise on se tourne désormais vers le problème de déterminer si oui ou non il existe des solutions consistantes.
 On rappelle qu'on s'intéresse toujours au problème $Ax \le b$ avec $A \in \mathcal{M}_{n,m}(\mathbb{R})$ et $b \in \mathbb{R}^n$.
@@ -452,21 +445,109 @@ Il faut donc résoudre le problème $\mathcal{P}_2$.\\
 On dira alors que le problème est facile à résoudre.\\
 ~\\
 Ainsi, via la proposition précédente on peut construire un nouveau problème de taille $(n,n- \text{rang}(A \vert b))$.
-Il peut être utile de considérer ce problème si $\text{rang}(A)=m$.
+Il peut être utile de considérer ce problème si $\text{rg}(A)=n$.
 Dans le cas général, il est compliqué de déterminer si le système est consistant ou non.
 On ne dispose que depuis récemment d'algorithmes qui convergent en temps polynomiaux et beaucoup de questions sont encore ouvertes à ce sujet.
 
-\subsection{Trouver une solution au problème d'inégalités aux moindres carrés.}
+\subsection{Algorithmes et consistance}
 
-\subsubsection{Convexité}
+On va ici décrire deux algorithmes pour la résolution du problème de consistance :
+\begin{itemize}
+\item l'élimination de Fourier-Motzkin
+\item l'algorithme du simplexe
+\end{itemize}
+
+\subsubsection{L'élimination de Fourier-Motzkin}
+On présente ici un premier algorithme trouvé par Joseph Fourier et redécouvert par Théodore Motzkin, \cite{motzkin1952theory}.
+L'idée ici est de réduire le nombre de variables, c'est-à-dire de diminuer $m$ la taille de l'espace d'entrée. Malheureusement, le nombre d'équations à vérifier explose dans ce cas. 
+
+\begin{prop}
+Soit un système $Ax \le b$ avec $b \in \mathbb{R}^n$ et $A \in \mathcal{M}_{n,m}(\mathbb{R})$. On peut trouver $B \in \mathcal{M}_{\lceil \frac{ n^2}{4} \rceil,m-1}$ et $b' \in \mathbb{R}^{\lceil\frac{n^2}{4} \rceil}$ tel que la résolution de $Ax \le b$ soit équivalent à celle de $Bx' \le b'$.
+\end{prop}
+
+\subparagraph{Démonstration :} On considère la dernière coordonnée de $x$, $x_m$. On note :
+\begin{itemize}
+\item $n_A$ le nombre d'équations où l'on peut isoler $x_n$ et qui sont de la forme $x_n \le A_i(x_1, \dots, x_{n-1})$ avec $i \in \llbracket 1,n_a \rrbracket$.
+\item $n_B$ le nombre d'équations où l'on peut isoler $x_n$ et qui sont de la forme $x_n \ge B_i(x_1, \dots, x_{n-1})$ avec $i \in \llbracket 1,n_b \rrbracket$.
+\end{itemize} 
+
+Une condition nécessaire de consistance est alors 
+\begin{equation}
+\exists (x_1,\dots,x_{n-1}) \ \underset{i \in \llbracket 1,n_a \rrbracket}{\max}B_i(x_1,\dots,x_{n-1}) \le \underset{i \in \llbracket 1,n_b \rrbracket}{\min}A_i(x_1,\dots,x_{n-1})
+\end{equation}
+
+Ce qui se traduit par $n_an_b$ équations du type $B_j(x_1,\dots,x_{n-1}) \le A_i(x_1,\dots,x_{n-1})$ avec $j \in \llbracket 1,n_b \rrbracket$ et $i \in \llbracket 1,n_a \rrbracket$.
+
+Ainsi le nombre d'équations à vérifier pour avoir consistance est $n-n_a-n_b+n_an_b$. En maximisant cette quantité (on peut d'abord remarquer que le maximum est atteint pour $n_a+n_b=n$ si $n \ge 2$ puis étudier le polynôme de degré 2 en $n_a$) on trouve le résultat.
+
+\subparagraph{Remarque :} cette technique n'est pas satisfaisante. En effet, pour un système dont l'entrée possède $m$ coordonnées on obtient une résolution de l'ordre de $4 \left( \frac{n}{4} \right)^{2^m}$ étapes. La complexité est donc doublement exponentielle.
+
+\subsubsection{L'algorithme du simplexe}
+On va maintenant décrire un algorithme développé par George Dantzig en 1947, on ne donnera pas de preuve de convergence de l'algorithme. La description complète de celui-ci est en effet assez technique et demande une attention particulière pour éviter de boucler (règles d'anti-cyclage). On présente simplement l'idée générale.
+
+Tout d'abord il convient de se placer dans un cadre plus large, celui de la programmation linéaire qui cherche à résoudre le problème suivant :
+\begin{equation}
+\left\lbrace
+\begin{aligned}
+&\underset{x \in \mathbb{R}^m}{\inf}\langle c,x \rangle \\
+& \text{sous la contrainte } \ Ax \le b
+\end{aligned}
+\right.
+\end{equation}
+
+Un théorème de programmation linéaire assure que si une solution existe alors il existe une solution en un des sommets du polyèdre convexe défini par $Ax \le b$. Ainsi l'algorithme procède de la manière suivante :
+\begin{itemize}
+\item on commence par se placer en un sommet
+\item on se déplace dans la direction de minimisation sur une arête
+\item on aboutit à un autre sommet. Soit celui-ci est solution, soit il ne l'est pas et on recommence.
+\end{itemize}
+
+\subparagraph{Remarque :} deux points importants sont à noter :
+\begin{itemize}
+\item l'algorithme converge mais la vitesse de convergence est a priori exponentielle. Néanmoins, l'algorithme est très efficace dans la plupart des cas.
+\item Si le problème est non borné, c'est-à-dire si le minimum n'est pas atteint, l'algorithme s'arrête après un nombre fini d'étapes.
+\item on pourrait penser que l'on se place ici dans un cadre bien éloigné de notre problème de départ qui consistait à chercher une solution au problème de consistance des inégalités linéaires. En effet le problème de la consistance des inégalités linéaires est aussi compliqué que celui de la programmation linéaire.
+\end{itemize}
+La proposition suivante illustre comment l'algorithme du simplexe répond au problème de consistance.
+
+\begin{prop}
+Soit le problème de programmation linéaire suivant :
+\begin{equation}
+\left\lbrace
+\begin{aligned}
+& \text{min} \ \underset{i}{\sum}z_i\\
+& Ax+Dz=b\\
+& x \ge 0, z \ge 0\\
+\end{aligned}
+\right.
+\end{equation}
+Avec $D$ une matrice diagonale avec $D_{ii}$ qui vaut $1$ si $b_i \ge 0$ et $-1$ sinon. On peut toujours débuter l'algorithme du simplexe de $(0,Db)$. Si la solution donnée par l'algorithme du simplexe est $(\hat{x},\hat{z})$ avec $\hat{z} \neq 0$ alors le système d'inégalités n'est pas consistant. Si $\hat{z}=0$ alors le système d'inégalités est consistant et $\hat{x}$ est une solution de $A \hat{x} = b$ avec $\hat{x} \ge 0$
+\end{prop}
+
+On détaille dans \ref{passage} pourquoi ce problème d'égalités linéaires sous contraintes peut être mis en correspondance avec un problème d'inégalités linéaires.
+\section{Inégalités linéaires aux moindres carrés}
+
+\subsection{Existence de solutions et recherche de solutions}
+
+\begin{thm}
+  Quelque soit la matrice $A \in \mathcal{M}_{n \times m}(\mathbb{R})$ et le vecteur $b \in \mathbb{R}^n$, le problème d'inégalité aux moindres carrés $\mathcal{P}_{\leq}(A, b)$ admet une solution $x_0 \in \mathbb{R}^m$.
+  Quelque soit la solution $x_0$, le vecteur résidu $z = (Ax_0 - b)_+$ est unique est $x$ est une solution du problème si et seulement si $(Ax - b)_+ = z$.
+\end{thm}
+\subparagraph{Démonstration :}
+Pour l'existence, trois preuves différentes sont proposées dans l'article \cite{LSCHUP}. Il est à noter que $\| (Ax-b)_+ \|^2$ peut s'interpréter très facilement comme la distance de $Ax-b$ à $K=\lbrace x \in \mathbb{R}^m, \ \forall i \in \llbracket 1,m \rrbracket, \ x_i \ge 0 \rbrace$. Le problème peut-alors s'écrire comme un problème de projection sur $\text{Im}A+K$ de $b$. Le théorème de projection sur un convexe fermé dans un espace Hilbertien assure l'existence et l'unicité de ce projeté.
+
+
+\subparagraph{Remarques :} \textbf{Il n'existe pas pour l'instant de théorème donnant la forme des solutions au problème $\mathcal{P}_{\leq}(A, b)$}.
+C'est pourquoi nous allons nous intéresser plus particulièrement aux algorithmes qui proposent de trouver une solution au problème.
+
 La fonction $F(x)=\|(Ax-b)_+ \|^2$ que l'on cherche à minimiser est différentiable et convexe.
-Malheureusement elle n'est pas strictement convexe en général.
-En effet, si il existe $x_0$ et $x_1$ tels que $F(x_0)$ et $F(x_1)$ alors $\forall x \in [x_0, x_1]$, $F(x) = 0$ : F est constante.
-On n'a aucune assurance que les algorithmes "classiques" de minimisation de fonctions convexes (gradient, gradient conjugué...) convergent vers une solution.
+Malheureusement elle n'est pas strictement convexe en général. On peut le voir en remarquant que si le 
+minimum n'est pas unique on n'a aucune chance d'aboutir à une stricte convexité.
+On n'a donc aucune assurance que les algorithmes "classiques" de minimisation de fonctions convexes (gradient, gradient conjugué...) convergent vers une solution.
 
-\subsubsection{Elimination de Fourier-Motzkin}
-On va ici décrire une méthode découverte par Fourier pour déterminer si un système est consistant ou non.
-Malheureusement, comme on le verra, cette méthode n'est pas applicable car sa complexité est doublement exponentielle dans le pire cas.
+%\subsubsection{Elimination de Fourier-Motzkin}
+%On va ici décrire une méthode découverte par Fourier pour déterminer si un système est consistant ou non.
+%Malheureusement, comme on le verra, cette méthode n'est pas applicable car sa complexité est doublement exponentielle dans le pire cas.
 
 % L'algorithme du simplexe minimise cTx sous la contrainte Ax =< b.
 % je crois qu'il faut lui donner une solution initiale x_0 telle que Ax_0 =< b. Il ne résout pas notre pb.
@@ -475,41 +556,49 @@ Malheureusement, comme on le verra, cette méthode n'est pas applicable car sa c
 % Cependant, il a été prouvé que sa complexité pouvait être exponentielle.
 % D'autres algorithmes ont été développés par la suite pour résoudre ce problème et respectent la contrainte de convergence en temps polynomial, on cite notamment les méthodes de point intérieur.
 
-\section{L'algorithme de Han}
+\subsection{L'algorithme de Han}
 
 L'algorithme de Han \cite{hanalgo} qui permet de résoudre le problème des inégalité linéaires au moindre carré en temps fini.
 
-\subsection{Description}
-0n se donne $x_0 \in \mathbb{R}^m$.
+\subsubsection{Description}
+On se donne $x_0 \in \mathbb{R}^m$.
 On définit $I=\lbrace i \in \llbracket 1,n \rrbracket, \ (Ax_k - b)_i > 0 \rbrace$, ensemble des indices qui font que $x_k$ n'est pas une solution.
 On considère la formule d'itération suivante (en omettant les indices sur l'ensemble $I$ pour les notations):
-\begin{align*}
+\begin{equation}
+\begin{aligned}
   d_k & = A_I^+(A_I x_k - b)\\
   \widehat{\lambda} &= \underset{\lambda \in \mathbb{R}^+}{\text{argmin }}f(x - \lambda d_k)\\
   x_{k+1} & =x_k - \widehat{\lambda} d_k \\
-\end{align*}
+  \end{aligned}
+\end{equation}
 \subparagraph{Remarques :}
 \begin{itemize}
-  \item si l'on suppose que $I = \llbracket 1,n \rrbracket$ et que $A_I^TA_I = A^TA$ inversible, notre fonction F a minimiser est deux fois différentible de Hessienne inversible.
-    L'algorithme de Newton  s'appplique et donne comme direction de déscente :
-    \begin{align*}
+  \item si l'on suppose que $I = \llbracket 1,n \rrbracket$ et que $A_I^TA_I = A^TA$ inversible, notre fonction F a minimiser est deux fois différentiable de Hessienne inversible.
+    L'algorithme de Newton  s'applique et donne comme direction de descente :
+    \begin{equation}
+\begin{aligned}
       d_k &= (A^TA)^{-1}A^T(A x_k - b) \\
       A^TA d_k &= A^T(A x_k - b) \\
-    \end{align*}
+    \end{aligned}
+    \end{equation}
   \item on peut essayer d'appliquer cette stratégie dans le cas général en cherchant $d_k$ qui résolve au sens des moindres carrés le système:
-    \begin{align*}
+    \begin{equation}
+\begin{aligned}
       A_I^TA_I d_k &= A_I^T(A_I x_k - b_I) \\
-    \end{align*}
-    equivalent à (a prouver):
-    \begin{align*}
+    \end{aligned}
+    \end{equation}
+    équivalent à :
+    \begin{equation}
+\begin{aligned}
       A_I d_k &= (A_I x_k - b_I) \\
-    \end{align*}
+    \end{aligned}
+    \end{equation}
     dont on connait les solutions: $d_k \in A_I^+(A_I x_k -b_I) + \text{ker}A_I$.
     On prend $d_k$ de norme minimale, c'est à dire $d_k = A_I^+(A_I x_k -b_I)$.
     C'est la direction de descente proposée par l'algorithme de Han.
 \end{itemize}
 
-\subsection{Preuve de convergence}
+\subsubsection{Preuve de convergence}
 
 Commençons par montrer que $d_k$ ainsi défini est tel que $-d_k$ est une direction de descente.
 On note $d(x)=A_I^+(A_I x -b_I)$.
@@ -532,7 +621,7 @@ A_I^TA_Id(x)&=A_I^TA_IA_I^+A_Ix -A_I^TA_IA_I^+b_I \\
 \subparagraph{Démonstration :}
 \begin{itemize}
   \item $(f(x_k))_{k \in \mathbb{N}}$ décroit.\\
-    En effet, comme $d_k^T \nabla f(x_k) \leq 0$, $d_k$ est une direction de déscente.
+    En effet, comme $d_k^T \nabla f(x_k) \leq 0$, $d_k$ est une direction de descente.
     Comme $\widehat{\lambda} = \underset{\lambda}{\text{argmin }} f(x_k - \lambda d_k)$, $f(x_{k+1}) \leq f(x_k)$.
     La suite étant décroissante majorée, elle converge.
   \item $\nabla f(x_k) \underset{k \rightarrow +\infty}{\rightarrow} 0$\\ 
@@ -562,7 +651,7 @@ Soit $(b_k,c_k)_{k \in \mathbb{N}}$ deux vecteurs tels que le systèmes $Ax\le b
 On suppose que nos deux suites convergent vers $b^*$, respectivement $c^*$.
 Le système $Ax \le b^*$ et $Bx=c^*$ est consistant.
 \end{lemma}
-DEMO
+
 \begin{prop}
 Soit $z_k=(Ax_k-b)_+$ alors $z_k \rightarrow z^*$ où $z^*$ est le résidu optimal.
 \end{prop}
@@ -621,8 +710,12 @@ L'algorithme de Han converge en un nombre fini d'étapes.
 \end{thm}
 \subparagraph{Remarque :} néanmoins, on ne dispose pas de borne sur le temps de convergence de l'algorithme, ni même sur la distance à une solution.
 
-\section{Une tentative de régularisation de l'algorithme de Han}
+Dans les prochaines sections, on envisage d'autres manières d'aborder le problème menant à des algorithmes moins compliqués que celui trouvé par Han.
 
+\section{D'autres approches...}
+
+\subsection{Régularisation quadratique}
+\subsubsection{Description}
 Dans cette sous section on considère le problème des inégalité linéaires au moindre carré avec régularisation $L^2$.
 Le problème devient alors de trouver l'argument minimum de la fonction suivante :
 \begin{equation}
@@ -640,7 +733,7 @@ Il s'agit donc de résoudre un problème de point fixe :
 x=-\frac{1}{\alpha}\left( A^T(Ax-b)_+\right)
 \end{equation}
 On pose $f_{\alpha}(x)=-\frac{1}{\alpha}\left( A^T(Ax-b)_+\right)$.
-\subsection{Itérées et minimum}
+\subsubsection{Expériences}
 Si $\alpha$ est assez grand alors la fonction $f_{\alpha}$ est contractante.
 Dans ce cas, on peut définir la suite $x_n=f_{\alpha}(x_{n-1})$ avec initialisation quelconque.
 Le minimum est alors unique et limite de cette suite.
@@ -702,56 +795,119 @@ Malheureusement on perd alors la convergence.
 On a ici tenté d'augmenter le nombre d'itérations de l'algorithme afin de déterminer si le problème de la non-convergence est dû à un $\alpha$ trop petit ou à un nombre d'itérations trop faible.
 Le fait que les résultats soient quasiment lorsque $N=500$ nous incite à pencher vers la première hypothèse d'un $\alpha$ trop petit.
 
-\section{Une autre approche du problème}
+\subsection{Un nouveau problème aux moindres carrés}
 
-\subsection{Du cas d'inégalité au cas d'égalité sous contrainte}
+\subsubsection{Du cas d'inégalité au cas d'égalité sous contrainte}
+\label{passage}
 \begin{thm}
   Soient $A \in \mathcal{M}_{n,m}(\mathbb{R})$ avec $(n,m) \in \mathbb{N}^2$ et $b \in \mathbb{R}^{n}$.
-  Il existe $(n', m') \in \mathbb{N}^2$ et $A' \in \mathcal{M}_{n',m'}(\mathbb{R})$ et $b' \in \mathbb{R}^{n'}$ tels que le système d'inégalité linéraire
-\begin{align*}
-  Ax &\leq b\\
-\end{align*}
-soit équivalent au sytème d'égalité lineaire avec contrainte:
-\begin{align*}
+  Il existe $(n', m') \in \mathbb{N}^2$ et $A' \in \mathcal{M}_{n',m'}(\mathbb{R})$ et $b' \in \mathbb{R}^{n'}$ tels que le système d'inégalités linéaires 
+\begin{equation}
+  Ax \leq b
+\end{equation}
+soit équivalent au système d'égalités linéaires avec contrainte:
+\begin{equation}
+\begin{aligned}
   A'x &= b'\\
   x &\geq 0\\
-\end{align*}
+  \end{aligned}
+\end{equation}
 \end{thm}
-
-\subparagraph{Remarques :}
-\begin{itemize}
-  \item TODO
-\end{itemize}
 
 \subparagraph{Démonstration :}
 On pose $z = Ax -b$ de sorte que le système $Ax \leq b$ est équivalent à:
-\begin{align*}
+\begin{equation}
+\begin{aligned}
   z &\geq 0 \\
   Ax + z &= b
-\end{align*}
+\end{aligned}
+\end{equation}
 On pose $x_+ = max(x, 0)$ et $x_- = max(-x, 0)$ de sorte que:
-\begin{align*}
+\begin{equation}
+\begin{aligned}
   x_+ &\geq 0 \\
   x_+ &\geq 0 \\
-  \tilde{A} &= \left[ A, -A, Id \right]\\
+  \tilde{A} &= \left[ A, -A, Id_n \right]\\
   \tilde{x} &= \left[ \begin{array}{c} x_+ \\ x_- \\ z \end{array} \right]\\
-\end{align*}
+  \end{aligned}
+\end{equation}
 et on a bien :
-\begin{align*}
+\begin{equation}
+\begin{aligned}
   \tilde{A}\tilde{x} &= Ax + z = b\\
   \tilde{x} \geq 0
-\end{align*}
-qui est équivalent au système $Ax \leq b$.
+  \end{aligned}
+\end{equation}
+qui est équivalent au système $Ax \leq b$. Il est à noter que $\tilde{A} \in \mathcal{M}_{n,2m+n}$.
 
-\subsection{Algorithme de gradient projeté}
-
-Ce problème d'égalité sous contrainte que nous avons énoncé peut être résolu au sens des moindres carrés.
-Les conditions d'optimalité KKT donnent:
-\begin{align*}
+Ce problème d'égalité sous contrainte que nous avons énoncé peut être résolu au sens des moindres carrés. En effet, on considère le nouveau problème :
+\begin{equation}
+\mathcal{P}_{\le}'(A,b): \ \hat{\tilde{x}}=\underset{\tilde{x}}{argmin}( \|\tilde{A}\tilde{x} -b \|^2) \ \text{sachant} \ \tilde{x}\ge 0
+\end{equation} 
+Puisque que le problème est convexe les conditions de Karush, Kuhn et Tucker (KKT) donnent une condition nécessaire et suffisante d'optimalité :
+\begin{equation}
+\begin{aligned}
   \tilde{A}^T \left( \tilde{A}\tilde{x} - b \right) &= \Lambda\\
   \Lambda \geq 0\\
-\end{align*}
+\end{aligned}
+\end{equation}
+C'est-à-dire :
+\begin{equation}
+\begin{aligned}
+  \tilde{A}^T \left(Ax + z - b \right) &= \Lambda\\
+  \Lambda \geq 0\\
+  \end{aligned}
+\end{equation}
 
+Avec $\Lambda = \left[ \Lambda_1 \ \Lambda_2 \ \Lambda_3 \right]^T$ avec $(\Lambda_1, \Lambda_2, \Lambda_3) \in \left(\mathbb{R_+}^m \right)^3$. On obtient le jeu d'équations suivant :
+
+\begin{equation}
+\left\lbrace
+\begin{aligned}
+&A^T(Ax+z-b) = \Lambda_1 \\
+&-A^T(Ax+z-b)= \Lambda_2 \\
+&Ax+z-b = \Lambda_3
+\end{aligned}
+\right.
+\end{equation}
+On trouve alors que $\Lambda_1 = - \Lambda_2$. La condition de positivité impose que $\Lambda_1 = \Lambda_2 = 0$. On a l'équivalence suivante :
+\begin{equation}
+\tilde{x}=(x_+, x_-, z) \ \text{est solution du problème} \ \mathcal{P}_{\le}' \ \Leftrightarrow \ \ A^T(Ax+z-b)=0 \ \text{et} \ Ax+z-b \ge 0
+\end{equation}
+De cela on peut donner le théorème suivant.
+\begin{thm}
+Toute solution de $\mathcal{P}_{\le}$ permet de construire une solution de $\mathcal{P}_{\le}'$.
+\end{thm}
+\subparagraph{Preuve :} Soit $x$ une solution du problème des inégalités aux moindres carrés au sens défini par Urruty. On pose $x_+$, $x_-$ les parties positives et négatives correspondantes. Enfin on pose $z \in \mathbb{R}^m$ tel que $z_i=0$ si $(Ax-b)_i >0$ et $z_i= -(Ax-b)_i$ sinon. Dans ce cas : $Ax-b+z=(Ax-b)_+$ et $A^T(Ax-b)_+=0$. De plus la condition $Ax+z-b \ge 0$ est vérifiée.
+
+Ainsi en résolvant le problème aux moindres carrés $\mathcal{P}_{\le}'$ on trouve des solutions dont on peut vérifier si elles appartiennent à l'ensemble des solutions du problème aux moindres carrés original, $\mathcal{P}_{\le}$. La résolution de ce problème est envisagé par un algorithme de type gradient projeté. Il est à préciser qu'a priori on n'a pas d'assurance de convergence de l'algorithme. En effet, la stricte convexité requiert $\text{ker}\tilde{A}= \lbrace 0 \rbrace$ ce qui n'est jamais acquis. On pourrait malgré tout envisager de décomposer $x$ sur $\text{ker}\tilde{A} \overset{\perp}{\oplus} \text{Im}\tilde{A}^T$. En posant : $z = x -\tilde{A}^T(\tilde{A}x -b)$ et en décomposant $z$ sur $\text{ker}\tilde{A} \overset{\perp}{\oplus} \text{Im}\tilde{A}^T$. On constate que $z$ n'évolue pas sur $\text{ker}\tilde{A}$ et que l'on applique simplement l'itération sur $\text{Im}\tilde{A}$. Notre problème vient du fait que l'on applique une non-linéarité (i.e $(.)_+$) qui rebat les cartes au moment de passer à l'itération suivante.
+\subsubsection{Algorithme de gradient projeté}
+Conscient de ces remarques on a tout de même essayé notre algorithme de gradient projeté sur des données. Ici on présente les résultats obtenus pour une matrice aléatoire de taille $10 \times 10$ avec coefficients choisis de manière uniforme dans $[0,1]$ et $b$ vecteur de taille $10 \times 1$ avec coefficients choisis de manière uniforme dans $[-\frac{1}{2}, \frac{1}{2}]$. Le pas choisi est ici fixé à $0.005$. On affiche tout d'abord l'évolution en fonction du nombre d'itérations de la différence entre deux itérées (en valeur absolue et en échelle semi-logarithmique).
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{gradproj_erreur.pdf}
+\caption{Différence logarithmique entre deux itérées}
+\end{figure}
+
+On observe bien une stabilisation de l'algorithme.
+On arrête l'algorithme après $5000$ itérations et on observe les résultats. On affiche ici deux courbes correspondant à deux coordonnées du résidu (ces deux coordonnées ont été choisies sans raison particulière, on aurait pu afficher toutes les autres coordonnées mais on choisit de ne pas le faire afin de gagner en lisibilité).
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.47\linewidth}
+\centering
+\includegraphics[scale=0.4]{gradprojres_9.pdf}
+\caption{Coordonnée $9$ du vecteur résiduel}
+\end{minipage}
+\begin{minipage}{.47\linewidth}
+\centering
+\includegraphics[scale=0.4]{gradprojres_8.pdf}
+\caption{Coordonnée $8$ du vecteur résiduel}
+\end{minipage}
+\end{figure}
+
+Toutes les coordonnées se stabilisent autour d'une valeur qui, dans le cadre de notre expérience, correspondait à une solution au problème de la consistance (en effet le système choisi aléatoirement est de rang $10$ et donc consistant). La coordonnée $8$ a un comportement particulièrement intéressant puisqu'elle reste toujours positive mais tend vers $0$ (pour $N = 10000$, elle est de l'ordre de $10^{-14}$).
 \bibliographystyle{plain}
 \bibliography{report_project}
 
