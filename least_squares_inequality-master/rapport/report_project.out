@@ -1,0 +1,24 @@
+\BOOKMARK [1][-]{section.1}{Pr\351sentation du probl\350me}{}% 1
+\BOOKMARK [1][-]{section.2}{\311quations lin\351aires}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Rappels sur la pseudo-inverse}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Solutions au probl\350me d'\351galit\351 aux moindres carr\351s}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{In\351galit\351s lin\351aires : le probl\350me de la consistance}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Introduction et quelques d\351finitions}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Consitance et th\351or\350mes de l'alternative}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Retour aux in\351galit\351s lin\351aires}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.4}{Algorithmes et consistance}{section.3}% 9
+\BOOKMARK [3][-]{subsubsection.3.4.1}{L'\351limination de Fourier-Motzkin}{subsection.3.4}% 10
+\BOOKMARK [3][-]{subsubsection.3.4.2}{L'algorithme du simplexe}{subsection.3.4}% 11
+\BOOKMARK [1][-]{section.4}{In\351galit\351s lin\351aires aux moindres carr\351s}{}% 12
+\BOOKMARK [2][-]{subsection.4.1}{Existence de solutions et recherche de solutions}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.2}{L'algorithme de Han}{section.4}% 14
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Description}{subsection.4.2}% 15
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Preuve de convergence}{subsection.4.2}% 16
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Exp\351riences}{subsection.4.2}% 17
+\BOOKMARK [1][-]{section.5}{D'autres approches...}{}% 18
+\BOOKMARK [2][-]{subsection.5.1}{R\351gularisation quadratique}{section.5}% 19
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Description}{subsection.5.1}% 20
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Exp\351riences}{subsection.5.1}% 21
+\BOOKMARK [2][-]{subsection.5.2}{Un nouveau probl\350me aux moindres carr\351s}{section.5}% 22
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Du cas d'in\351galit\351 au cas d'\351galit\351 sous contrainte}{subsection.5.2}% 23
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Algorithme de gradient projet\351}{subsection.5.2}% 24

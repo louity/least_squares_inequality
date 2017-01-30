@@ -1,0 +1,29 @@
+\begin{thebibliography}{1}
+
+\bibitem{LSCHUP}
+Penot Jean-Paul Contesse~Luis, Hiriart-Urruty Jean-Baptiste.
+\newblock Least-squares solution of linear inequality systems: a pedestrian
+  approach.
+
+\bibitem{dantzig1998linear}
+George~Bernard Dantzig.
+\newblock {\em Linear programming and extensions}.
+\newblock Princeton university press, 1998.
+
+\bibitem{hanalgo}
+Han.
+\newblock Least-squares solution of linear inequalities.
+\newblock 1980.
+
+\bibitem{motzkin1952theory}
+Theodor Motzkin.
+\newblock The theory of linear inequalities.
+\newblock Technical report, DTIC Document, 1952.
+
+\bibitem{penrose1955generalized}
+Roger Penrose.
+\newblock A generalized inverse for matrices.
+\newblock In {\em Mathematical proceedings of the Cambridge philosophical
+  society}, volume~51, pages 406--413. Cambridge Univ Press, 1955.
+
+\end{thebibliography}
